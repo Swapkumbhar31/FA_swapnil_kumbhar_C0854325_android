@@ -8,8 +8,11 @@ import android.os.Bundle;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import ca.lambton.fa_swapnil_kumbhar_c0854325_android.SharedPreferences.UserSettings;
+import ca.lambton.fa_swapnil_kumbhar_c0854325_android.database.Place;
+import ca.lambton.fa_swapnil_kumbhar_c0854325_android.database.PlacesRoomDB;
 
 public class PlaceList extends AppCompatActivity {
+    private PlacesRoomDB placesRoomDB;
 
     private FloatingActionButton floatingActionButton;
     @Override
@@ -18,6 +21,7 @@ public class PlaceList extends AppCompatActivity {
         setContentView(R.layout.activity_place_list);
         setTitle("Home");
 
+        placesRoomDB = PlacesRoomDB.getInstance(this);
 
         floatingActionButton = findViewById(R.id.floatingActionButton);
 
@@ -36,6 +40,15 @@ public class PlaceList extends AppCompatActivity {
     }
 
     private void insertPlaces() {
-
+        placesRoomDB.placeDAO().addPlace(new Place("Taj Mahal", 27.1752474,77.8330407));
+        placesRoomDB.placeDAO().addPlace(new Place("Great Wall of China", 40.4319118,116.5681862));
+        placesRoomDB.placeDAO().addPlace(new Place("Chichén Itzá", 20.6828175,-88.5727964));
+        placesRoomDB.placeDAO().addPlace(new Place("Petra", 30.328459,35.4421735));
+        placesRoomDB.placeDAO().addPlace(new Place("Machu Picchu", -13.2086968,-72.5619342));
+        placesRoomDB.placeDAO().addPlace(new Place("Christ the Redeemer", -22.951911,-43.2126759));
+        placesRoomDB.placeDAO().addPlace(new Place("Colosseum", 41.8902102,12.4922309));
+        placesRoomDB.placeDAO().addPlace(new Place("Sukhothai, Thailand", 17.2519855,99.1364003));
+        placesRoomDB.placeDAO().addPlace(new Place("CN Tower", 43.6425701,-79.3892455));
+        placesRoomDB.placeDAO().addPlace(new Place("Walt Disney World® Resort", 28.3771903,-81.5752247));
     }
 }

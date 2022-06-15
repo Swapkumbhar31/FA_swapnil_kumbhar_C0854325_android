@@ -10,18 +10,18 @@ import java.util.List;
 @Dao
 public interface PlaceDAO {
 
-    @Query("select * from place")
+    @Query("select * from places")
     List<Place> getAllPlaces();
 
     @Insert
-    Place addPlace(Place place);
+    void addPlace(Place place);
 
-    @Query("delete from place where id = :id")
+    @Query("delete from places where id = :id")
     void deletePlace(int id);
 
     @Update
     void updatePlace(Place place);
 
-    @Query("select * from place where name like '%' || :name || '%'")
+    @Query("select * from places where name like '%' || :name || '%'")
     List<Place> searchPlaceByName(String name);
 }
