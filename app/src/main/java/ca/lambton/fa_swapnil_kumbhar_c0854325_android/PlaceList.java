@@ -1,13 +1,18 @@
 package ca.lambton.fa_swapnil_kumbhar_c0854325_android;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
 import android.os.Bundle;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
+import java.util.List;
+
 import ca.lambton.fa_swapnil_kumbhar_c0854325_android.SharedPreferences.UserSettings;
+import ca.lambton.fa_swapnil_kumbhar_c0854325_android.adaptor.PlaceListAdaptor;
 import ca.lambton.fa_swapnil_kumbhar_c0854325_android.database.Place;
 import ca.lambton.fa_swapnil_kumbhar_c0854325_android.database.PlacesRoomDB;
 
@@ -15,11 +20,20 @@ public class PlaceList extends AppCompatActivity {
     private PlacesRoomDB placesRoomDB;
 
     private FloatingActionButton floatingActionButton;
+
+    private List<Place> places;
+    RecyclerView placesListView;
+    LinearLayoutManager layoutManager;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_place_list);
         setTitle("Home");
+
+        placesListView = findViewById(R.id.place_list);
+        placesListView.setHasFixedSize(true);
+        layoutManager = new LinearLayoutManager(this);
+        placesListView.setLayoutManager(layoutManager);
 
         placesRoomDB = PlacesRoomDB.getInstance(this);
 
@@ -37,6 +51,10 @@ public class PlaceList extends AppCompatActivity {
             insertPlaces();
             userSettings.setIsFirstTimeOpen(false);
         }
+
+        places = placesRoomDB.placeDAO().getAllPlaces();
+
+        placesListView.setAdapter(new PlaceListAdaptor(this, places));
     }
 
     private void insertPlaces() {

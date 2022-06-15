@@ -2,12 +2,19 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical"
     android:layout_width="match_parent"
+    android:padding="@dimen/padding_medium"
     android:layout_height="wrap_content">
     <TextView
         android:text="@string/title"
-        android:padding="@dimen/padding_medium"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:textSize="22dp"
+        android:textSize="18sp"
+        android:textColor="@color/black"
         android:id="@+id/title"/>
+    <TextView
+        android:text="@string/subtitle"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textSize="14sp"
+        android:id="@+id/subtitle"/>
 </LinearLayout>
