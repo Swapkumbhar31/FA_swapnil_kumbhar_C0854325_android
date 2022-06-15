@@ -5,25 +5,28 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".PlaceList">
+
     <TextView
-        android:text="@string/your_place_wishlist"
-        android:layout_width="match_parent"
         android:id="@+id/title"
-        android:layout_height="wrap_content"/>
-   <androidx.recyclerview.widget.RecyclerView
-       android:id="@+id/place_list"
-       android:layout_below="@id/title"
-       android:layout_width="match_parent"
-       android:layout_height="match_parent"/>
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/your_place_wishlist" />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/place_list"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@id/title" />
+
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/floatingActionButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_margin="16dp"
         android:layout_alignParentEnd="true"
         android:layout_alignParentBottom="true"
-        app:tint="@color/primary_700"
+        android:layout_margin="16dp"
         android:backgroundTint="@color/primary_200"
         android:foregroundGravity="bottom|center"
-        android:src="@drawable/ic_baseline_add_48"/>
+        android:src="@drawable/ic_baseline_add_48"
+        app:tint="@color/primary_700" />
 </RelativeLayout>

@@ -7,6 +7,8 @@ import android.os.Bundle;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
+import ca.lambton.fa_swapnil_kumbhar_c0854325_android.SharedPreferences.UserSettings;
+
 public class PlaceList extends AppCompatActivity {
 
     private FloatingActionButton floatingActionButton;
@@ -23,6 +25,17 @@ public class PlaceList extends AppCompatActivity {
             Intent i = new Intent(PlaceList.this, MapsActivity.class);
             startActivity(i);
         });
+
+        UserSettings userSettings = new UserSettings().getInstance(getApplicationContext());
+        boolean firstTimeOpen = new UserSettings().getInstance(getApplicationContext()).isFirstTimeOpen();
+
+        if (firstTimeOpen) {
+            insertPlaces();
+            userSettings.setIsFirstTimeOpen(false);
+        }
+    }
+
+    private void insertPlaces() {
 
     }
 }
