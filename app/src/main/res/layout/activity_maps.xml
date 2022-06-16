@@ -17,9 +17,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_margin="16dp"
-        android:layout_alignParentEnd="true"
-        android:layout_alignParentBottom="true"
-        android:foregroundGravity="bottom|center"
+        style="@style/fab"
         android:src="@android:drawable/ic_menu_edit"
         tools:ignore="RtlHardcoded" />
     <SearchView

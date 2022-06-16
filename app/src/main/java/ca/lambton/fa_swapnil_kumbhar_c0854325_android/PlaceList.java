@@ -5,12 +5,16 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
+import android.widget.Toast;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.util.List;
 
+import ca.lambton.fa_swapnil_kumbhar_c0854325_android.Helper.MyButtonClickListener;
+import ca.lambton.fa_swapnil_kumbhar_c0854325_android.Helper.PlaceListItemSwipeHelper;
 import ca.lambton.fa_swapnil_kumbhar_c0854325_android.SharedPreferences.UserSettings;
 import ca.lambton.fa_swapnil_kumbhar_c0854325_android.adaptor.PlaceListAdaptor;
 import ca.lambton.fa_swapnil_kumbhar_c0854325_android.database.Place;
@@ -55,6 +59,24 @@ public class PlaceList extends AppCompatActivity {
         places = placesRoomDB.placeDAO().getAllPlaces();
 
         placesListView.setAdapter(new PlaceListAdaptor(this, places));
+
+        PlaceListItemSwipeHelper placeListItemSwipeHelper = new PlaceListItemSwipeHelper(this, placesListView, 400) {
+            @Override
+            public void instantiateMyButton(RecyclerView.ViewHolder viewHolder, List<PlaceListItemSwipeHelper.MyButton> buffer) {
+//                buffer.add(new MyButton(PlaceList.this, "Delete", 60, 0, Color.parseColor("#ff3c30"), new MyButtonClickListener() {
+//                    @Override
+//                    public void onClick(int pos) {
+//                        Toast.makeText(PlaceList.this, "Hello!!!", Toast.LENGTH_SHORT).show();
+//                    }
+//                }));
+//                buffer.add(new MyButton(PlaceList.this, "ADD", 60, 0, Color.parseColor("#ff3c30"), new MyButtonClickListener() {
+//                    @Override
+//                    public void onClick(int pos) {
+//                        Toast.makeText(PlaceList.this, "BYE!!!", Toast.LENGTH_SHORT).show();
+//                    }
+//                }));
+            }
+        };
     }
 
     private void insertPlaces() {
