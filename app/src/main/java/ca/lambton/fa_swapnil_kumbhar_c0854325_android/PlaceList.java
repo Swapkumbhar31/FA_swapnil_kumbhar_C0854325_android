@@ -60,6 +60,7 @@ public class PlaceList extends AppCompatActivity {
 
         placesListView.setAdapter(new PlaceListAdaptor(this, places));
 
+
         PlaceListItemSwipeHelper placeListItemSwipeHelper = new PlaceListItemSwipeHelper(this, placesListView, 400) {
             @Override
             public void instantiateMyButton(RecyclerView.ViewHolder viewHolder, List<PlaceListItemSwipeHelper.MyButton> buffer) {
