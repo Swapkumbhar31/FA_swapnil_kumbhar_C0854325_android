@@ -9,6 +9,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
+import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.location.Address;
 import android.location.Geocoder;
@@ -17,6 +18,7 @@ import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.Build;
 import android.os.Bundle;
+import android.provider.MediaStore;
 import android.provider.Settings;
 import android.util.Log;
 import android.view.View;
@@ -60,6 +62,7 @@ import org.json.JSONObject;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 import java.util.Objects;
@@ -134,8 +137,6 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 if (exception instanceof ApiException) {
                     final ApiException apiException = (ApiException) exception;
                     Log.i("TAG", "Place not found: " + exception.getMessage());
-                    final int statusCode = apiException.getStatusCode();
-                    // TODO: Handle error with given status code.
                 }
             });
         });
@@ -166,6 +167,25 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             binding.addressView.setVisibility(View.GONE);
         });
         binding.suggestionsList.setAdapter(new AddressSuggestionAdaptor(this, addresses));
+        binding.closeBtn.setOnClickListener(view -> {
+            binding.addressView.setVisibility(View.GONE);
+        });
+        binding.saveBtn.setOnClickListener(view -> {
+            Intent intent = new Intent(this, AddNewPlace.class);
+            intent.putExtra("placeName", binding.txtAddress.getText().toString());
+            intent.putExtra("lat", newMarker.getPosition().latitude);
+            intent.putExtra("lng", newMarker.getPosition().longitude);
+            BitmapDrawable drawable = (BitmapDrawable) binding.placeImage.getDrawable();
+            Bitmap bitmap = drawable.getBitmap();
+            String imagePath = MediaStore.Images.Media.insertImage(
+                    getContentResolver(),
+                    bitmap,
+                    new Date().toString(),
+                    new Date().toString()
+            );
+            intent.putExtra("imagePath", imagePath);
+            startActivity(intent);
+        });
         setContentView(binding.getRoot());
         Places.initialize(getApplicationContext(), apiKey);
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
@@ -211,6 +231,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     @Override
     public void onMapReady(@NonNull GoogleMap googleMap) {
         mMap = googleMap;
+        mMap.getUiSettings().setMapToolbarEnabled(false);
         if (!manager.isProviderEnabled(LocationManager.FUSED_PROVIDER)) {
             OnGPS();
         } else {
@@ -226,6 +247,23 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             getLocationFromAddress(marker.getPosition());
             return false;
         });
+        mMap.setOnMarkerDragListener(new GoogleMap.OnMarkerDragListener() {
+            @Override
+            public void onMarkerDrag(@NonNull Marker marker) {
+
+            }
+
+            @Override
+            public void onMarkerDragEnd(@NonNull Marker marker) {
+                newMarker = marker;
+                fetchPlaceInformation();
+            }
+
+            @Override
+            public void onMarkerDragStart(@NonNull Marker marker) {
+
+            }
+        });
     }
 
     private void onClickMarker(LatLng location, String title) {
@@ -233,6 +271,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             newMarker.remove();
         }
         newMarker = addMarker(location, title);
+        newMarker.setDraggable(true);
         newMarker.showInfoWindow();
     }
 
@@ -250,11 +289,8 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             Location locationGPS = manager.getLastKnownLocation(LocationManager.FUSED_PROVIDER);
             if (locationGPS != null) {
                 double lat = locationGPS.getLatitude();
-                double longi = locationGPS.getLongitude();
-                String latitude = String.valueOf(lat);
-                String longitude = String.valueOf(longi);
-                System.out.println("Your Location: " + "Latitude: " + latitude + " Longitude: " + longitude);
-                addMarker(new LatLng(lat, longi), "Your Location").showInfoWindow();
+                double lng = locationGPS.getLongitude();
+                onClickMarker(new LatLng(lat, lng), "Your location");
             } else {
                 Toast.makeText(this, "Unable to find location.", Toast.LENGTH_LONG).show();
             }

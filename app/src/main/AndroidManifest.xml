@@ -3,9 +3,9 @@
     xmlns:tools="http://schemas.android.com/tools"
     package="ca.lambton.fa_swapnil_kumbhar_c0854325_android">
 
-    <uses-permission android:name="android.permission.INTERNET"/>
+    <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
-    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/>
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
 
     <application
         android:allowBackup="true"
@@ -17,6 +17,9 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.FA_swapnil_kumbhar_C0854325_android"
         tools:targetApi="31">
+        <activity
+            android:name=".AddNewPlace"
+            android:exported="false" />
         <activity
             android:name=".PlaceList"
             android:exported="true">
