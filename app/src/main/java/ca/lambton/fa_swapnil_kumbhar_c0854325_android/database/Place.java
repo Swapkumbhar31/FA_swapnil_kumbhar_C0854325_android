@@ -1,9 +1,15 @@
 package ca.lambton.fa_swapnil_kumbhar_c0854325_android.database;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.room.ColumnInfo;
 import androidx.room.Entity;
 import androidx.room.PrimaryKey;
+import androidx.room.TypeConverters;
+
+import java.util.Date;
+
+import ca.lambton.fa_swapnil_kumbhar_c0854325_android.Helper.DateConverter;
 
 @Entity(tableName = "places")
 public class Place {
@@ -14,6 +20,13 @@ public class Place {
     private String name;
 
     @NonNull
+    private String address;
+
+
+    @Nullable
+    private String imagePath;
+
+    @NonNull
     private Double lat;
 
     @NonNull
@@ -22,10 +35,44 @@ public class Place {
     @ColumnInfo(defaultValue = "false")
     private boolean isVisited;
 
-    public Place(@NonNull String name, @NonNull Double lat, @NonNull Double lng) {
+    @Nullable
+    public Date getCreatedAt() {
+        return createdAt;
+    }
+
+    public void setCreatedAt(@Nullable Date createdAt) {
+        this.createdAt = createdAt;
+    }
+
+    @Nullable
+    public String getImagePath() {
+        return imagePath;
+    }
+
+    public void setImagePath(@Nullable String imagePath) {
+        this.imagePath = imagePath;
+    }
+
+    @Nullable
+    @TypeConverters(DateConverter.class)
+    private Date createdAt;
+
+    public Place(@NonNull String name, @NonNull String address, @NonNull Double lat, @NonNull Double lng, @NonNull Date createdAt, @Nullable String imagePath) {
         this.name = name;
+        this.address = address;
         this.lat = lat;
         this.lng = lng;
+        this.imagePath = imagePath;
+        this.createdAt = createdAt;
+    }
+
+    @NonNull
+    public String getAddress() {
+        return address;
+    }
+
+    public void setAddress(@NonNull String address) {
+        this.address = address;
     }
 
     public int getId() {

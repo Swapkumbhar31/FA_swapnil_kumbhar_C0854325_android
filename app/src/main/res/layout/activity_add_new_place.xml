@@ -14,7 +14,7 @@
             android:layout_height="wrap_content">
             <ImageView
                 android:id="@+id/placeImage"
-                android:src="@drawable/demo_image"
+                android:src="@drawable/no_image"
                 android:scaleType="centerCrop"
                 android:layout_marginBottom="16dp"
                 android:layout_width="match_parent"
@@ -28,7 +28,11 @@
                 android:layout_width="match_parent"
                 android:layout_marginHorizontal="16dp"
                 android:hint="@string/enter_name"
+                android:id="@+id/txt_title"
                 android:maxLines="1"
+                android:inputType="text"
+                android:lines="1"
+                android:minLines="1"
                 android:textColor="@color/black"
                 android:layout_height="wrap_content"/>
             <TextView
@@ -41,7 +45,10 @@
                 android:layout_marginHorizontal="16dp"
                 android:hint="@string/enter_address"
                 android:maxLines="1"
+                android:inputType="text"
                 android:id="@+id/txtAddress"
+                android:lines="1"
+                android:minLines="1"
                 android:textColor="@color/black"
                 android:layout_height="wrap_content"/>
             <androidx.cardview.widget.CardView
@@ -65,7 +72,9 @@
         android:text="@string/add_to_wishlist"
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
+        app:icon="@drawable/ic_baseline_favorite_48_black"
         android:layout_width="wrap_content"
         android:layout_marginBottom="16dp"
+        android:id="@+id/add_to_wishlist"
         android:layout_height="wrap_content"/>
 </RelativeLayout>

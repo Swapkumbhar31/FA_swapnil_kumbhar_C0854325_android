@@ -10,7 +10,7 @@ import java.util.List;
 @Dao
 public interface PlaceDAO {
 
-    @Query("select * from places")
+    @Query("select * from places order by createdAt desc")
     List<Place> getAllPlaces();
 
     @Insert

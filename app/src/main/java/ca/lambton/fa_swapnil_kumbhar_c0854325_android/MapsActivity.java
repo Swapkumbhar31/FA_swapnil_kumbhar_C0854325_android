@@ -185,6 +185,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             );
             intent.putExtra("imagePath", imagePath);
             startActivity(intent);
+            finish();
         });
         setContentView(binding.getRoot());
         Places.initialize(getApplicationContext(), apiKey);

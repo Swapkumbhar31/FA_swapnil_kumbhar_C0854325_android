@@ -19,18 +19,25 @@ import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 
 import java.io.IOException;
+import java.util.Date;
 
+import ca.lambton.fa_swapnil_kumbhar_c0854325_android.database.Place;
+import ca.lambton.fa_swapnil_kumbhar_c0854325_android.database.PlacesRoomDB;
 import ca.lambton.fa_swapnil_kumbhar_c0854325_android.databinding.ActivityAddNewPlaceBinding;
 
 public class AddNewPlace extends AppCompatActivity implements OnMapReadyCallback {
     private ActivityAddNewPlaceBinding binding;
     GoogleMap mMap;
     Marker marker;
+    private PlacesRoomDB placesRoomDB;
+    LatLng latLng;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         binding = ActivityAddNewPlaceBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
+        placesRoomDB = PlacesRoomDB.getInstance(this);
+        setTitle("Add new place");
 
         Intent intent = getIntent();
         String imagePath = intent.getStringExtra("imagePath");
@@ -48,6 +55,26 @@ public class AddNewPlace extends AppCompatActivity implements OnMapReadyCallback
         if (mapFragment != null) {
             mapFragment.getMapAsync(this);
         }
+
+        binding.addToWishlist.setOnClickListener(view -> {
+            if (binding.txtTitle.getText().toString().isEmpty()) {
+                binding.txtTitle.setError("Title is required");
+                return;
+            }
+            if (binding.txtAddress.getText().toString().isEmpty()) {
+                binding.txtAddress.setError("Title is required");
+                return;
+            }
+            placesRoomDB.placeDAO().addPlace(new Place(
+                    binding.txtTitle.getText().toString(),
+                    binding.txtAddress.getText().toString(),
+                    latLng.latitude,
+                    latLng.longitude,
+                    new Date(),
+                    imagePath
+            ));
+            finish();
+        });
     }
 
     @Override
@@ -57,9 +84,11 @@ public class AddNewPlace extends AppCompatActivity implements OnMapReadyCallback
         Intent intent = getIntent();
         double lat = intent.getDoubleExtra("lat", 0);
         double lng = intent.getDoubleExtra("lng", 0);
-        LatLng latLng = new LatLng(lat, lng);
+        latLng = new LatLng(lat, lng);
         marker = mMap.addMarker(new MarkerOptions().position(latLng).title("Title"));
         mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(latLng, 15));
         mMap.getUiSettings().setMapToolbarEnabled(false);
     }
+
+
 }
