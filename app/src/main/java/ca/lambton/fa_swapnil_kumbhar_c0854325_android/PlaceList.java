@@ -64,18 +64,12 @@ public class PlaceList extends AppCompatActivity {
         PlaceListItemSwipeHelper placeListItemSwipeHelper = new PlaceListItemSwipeHelper(this, placesListView, 400) {
             @Override
             public void instantiateMyButton(RecyclerView.ViewHolder viewHolder, List<PlaceListItemSwipeHelper.MyButton> buffer) {
-//                buffer.add(new MyButton(PlaceList.this, "Delete", 60, 0, Color.parseColor("#ff3c30"), new MyButtonClickListener() {
-//                    @Override
-//                    public void onClick(int pos) {
-//                        Toast.makeText(PlaceList.this, "Hello!!!", Toast.LENGTH_SHORT).show();
-//                    }
-//                }));
-//                buffer.add(new MyButton(PlaceList.this, "ADD", 60, 0, Color.parseColor("#ff3c30"), new MyButtonClickListener() {
-//                    @Override
-//                    public void onClick(int pos) {
-//                        Toast.makeText(PlaceList.this, "BYE!!!", Toast.LENGTH_SHORT).show();
-//                    }
-//                }));
+                buffer.add(new MyButton(PlaceList.this, "Delete", 60, 0, Color.parseColor("#ff3c30"), new MyButtonClickListener() {
+                    @Override
+                    public void onClick(int pos) {
+                        Toast.makeText(PlaceList.this, "Hello!!!", Toast.LENGTH_SHORT).show();
+                    }
+                }));
             }
         };
     }

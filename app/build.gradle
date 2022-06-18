@@ -32,6 +32,7 @@ android {
 }
 
 dependencies {
+    implementation 'com.google.firebase:firebase-firestore:23.0.2'
     def room_version = "2.4.2"
 
     implementation "androidx.room:room-runtime:$room_version"
@@ -46,4 +47,6 @@ dependencies {
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.4.0'
 
     implementation 'com.google.android.gms:play-services-location:19.0.1'
+    implementation 'com.google.android.libraries.places:places:2.6.0'
+    implementation 'com.android.volley:volley:1.2.1'
 }

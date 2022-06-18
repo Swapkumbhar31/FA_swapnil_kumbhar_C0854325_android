@@ -4,4 +4,7 @@
     <string name="your_place_wishlist">Your wishlist</string>
     <string name="title">Title</string>
     <string name="subtitle">Subtitle</string>
+    <string name="dummy_address">Scarborough Town Centre, 300 Borough Dr, Scarborough, ON M1P 4P5, Canada</string>
+    <string name="save">Save</string>
+    <string name="cancel">Cancel</string>
 </resources>
