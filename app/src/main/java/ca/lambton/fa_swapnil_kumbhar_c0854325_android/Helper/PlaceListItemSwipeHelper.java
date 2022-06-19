@@ -235,8 +235,7 @@ public abstract class PlaceListItemSwipeHelper extends ItemTouchHelper.SimpleCal
             } else {
                 Drawable d = ContextCompat.getDrawable(context, imageResId);
                 Bitmap bitmap = drawableToBitmap(d);
-
-                canvas.drawBitmap(bitmap, (rectF.left + rectF.right) / 2, (rectF.top + rectF.bottom) / 2, paint);
+                canvas.drawBitmap(bitmap, (rectF.left + rectF.right) / 2 - (bitmap.getWidth() / 2f), (rectF.top + rectF.bottom) / 2 - (bitmap.getHeight() / 2f), paint);
 
             }
 
@@ -250,7 +249,8 @@ public abstract class PlaceListItemSwipeHelper extends ItemTouchHelper.SimpleCal
             }
             Bitmap bitmap = Bitmap.createBitmap(d.getIntrinsicWidth(), d.getIntrinsicHeight(), Bitmap.Config.ARGB_8888);
             Canvas canvas = new Canvas(bitmap);
-            d.setBounds(0, 0, canvas.getWidth(), canvas.getHeight());
+            int padding = 20;
+            d.setBounds(padding, padding, canvas.getWidth() - padding, canvas.getHeight() - padding);
             d.draw(canvas);
             return bitmap;
         }

@@ -5,8 +5,11 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.graphics.Color;
+import android.graphics.drawable.BitmapDrawable;
 import android.os.Bundle;
+import android.provider.MediaStore;
 import android.widget.Toast;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
@@ -57,13 +60,24 @@ public class PlaceList extends AppCompatActivity {
             userSettings.setIsFirstTimeOpen(false);
         }
 
-        new PlaceListItemSwipeHelper(this, placesListView, 400) {
+        new PlaceListItemSwipeHelper(this, placesListView, 300) {
             @Override
             public void instantiateMyButton(RecyclerView.ViewHolder viewHolder, List<PlaceListItemSwipeHelper.MyButton> buffer) {
-                buffer.add(new MyButton(PlaceList.this, "Delete", 60, 0, Color.parseColor("#ff3c30"), new MyButtonClickListener() {
+                buffer.add(new MyButton(PlaceList.this, "", 30, R.drawable.ic_baseline_delete_48_white, Color.parseColor("#e54304"), new MyButtonClickListener() {
                     @Override
                     public void onClick(int pos) {
-                        Toast.makeText(PlaceList.this, "Hello!!!", Toast.LENGTH_SHORT).show();
+                        Place place = places.get(pos);
+                        placesRoomDB.placeDAO().deletePlace(place.getId());
+                        Toast.makeText(PlaceList.this, place.getName() + " is deleted successfully", Toast.LENGTH_SHORT).show();
+                        onResume();
+                    }
+                }));
+                buffer.add(new MyButton(PlaceList.this, "", 30, R.drawable.ic_baseline_create_48_white, Color.parseColor("#09af00"), new MyButtonClickListener() {
+                    @Override
+                    public void onClick(int pos) {
+                        Intent intent = new Intent(getApplicationContext(), AddNewPlace.class);
+                        intent.putExtra("placeId", places.get(pos).getId());
+                        startActivity(intent);
                     }
                 }));
             }

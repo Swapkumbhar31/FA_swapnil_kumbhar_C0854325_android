@@ -25,12 +25,14 @@ import ca.lambton.fa_swapnil_kumbhar_c0854325_android.database.Place;
 import ca.lambton.fa_swapnil_kumbhar_c0854325_android.database.PlacesRoomDB;
 import ca.lambton.fa_swapnil_kumbhar_c0854325_android.databinding.ActivityAddNewPlaceBinding;
 
-public class AddNewPlace extends AppCompatActivity implements OnMapReadyCallback {
-    private ActivityAddNewPlaceBinding binding;
+public class AddNewPlace extends AppCompatActivity implements OnMapReadyCallback, GoogleMap.OnMarkerDragListener {
     GoogleMap mMap;
     Marker marker;
-    private PlacesRoomDB placesRoomDB;
     LatLng latLng;
+    Place place = null;
+    private ActivityAddNewPlaceBinding binding;
+    private PlacesRoomDB placesRoomDB;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -38,15 +40,35 @@ public class AddNewPlace extends AppCompatActivity implements OnMapReadyCallback
         setContentView(binding.getRoot());
         placesRoomDB = PlacesRoomDB.getInstance(this);
         setTitle("Add new place");
-
+        Uri imageUri = null;
         Intent intent = getIntent();
-        String imagePath = intent.getStringExtra("imagePath");
-        String address = intent.getStringExtra("placeName");
-        binding.txtAddress.setText(address);
-        final Uri imageUri = Uri.parse(imagePath);
+        int placeId = intent.getIntExtra("placeId", 0);
+        String imagePath;
+        if (placeId == 0) {
+            imagePath = intent.getStringExtra("imagePath");
+            String address = intent.getStringExtra("placeName");
+            double lat = intent.getDoubleExtra("lat", 0);
+            double lng = intent.getDoubleExtra("lng", 0);
+            latLng = new LatLng(lat, lng);
+            binding.txtAddress.setText(address);
+            imageUri = Uri.parse(imagePath);
+        } else {
+            place = placesRoomDB.placeDAO().getPlaceByID(placeId);
+            binding.txtAddress.setText(place.getAddress());
+            binding.txtTitle.setText(place.getName());
+            latLng = new LatLng(place.getLat(), place.getLng());
+            imagePath = place.getImagePath();
+            if (place.getImagePath() != null) {
+                imageUri = Uri.parse(place.getImagePath());
+            }
+            binding.addToWishlist.setText("Update place");
+            binding.addToWishlist.setIcon(null);
+        }
         try {
-            final Bitmap selectedImage =  getBitmapFormUri(this, imageUri);
-            binding.placeImage.setImageBitmap(selectedImage);
+            if (imageUri != null) {
+                final Bitmap selectedImage = getBitmapFormUri(this, imageUri);
+                binding.placeImage.setImageBitmap(selectedImage);
+            }
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -65,14 +87,22 @@ public class AddNewPlace extends AppCompatActivity implements OnMapReadyCallback
                 binding.txtAddress.setError("Title is required");
                 return;
             }
-            placesRoomDB.placeDAO().addPlace(new Place(
-                    binding.txtTitle.getText().toString(),
-                    binding.txtAddress.getText().toString(),
-                    latLng.latitude,
-                    latLng.longitude,
-                    new Date(),
-                    imagePath
-            ));
+            if (place == null) {
+                placesRoomDB.placeDAO().addPlace(new Place(
+                        binding.txtTitle.getText().toString(),
+                        binding.txtAddress.getText().toString(),
+                        latLng.latitude,
+                        latLng.longitude,
+                        new Date(),
+                        imagePath
+                ));
+            } else {
+                place.setName(binding.txtTitle.getText().toString());
+                place.setAddress(binding.txtAddress.getText().toString());
+                place.setLat(latLng.latitude);
+                place.setLng(latLng.longitude);
+                placesRoomDB.placeDAO().updatePlace(place);
+            }
             finish();
         });
     }
@@ -80,15 +110,32 @@ public class AddNewPlace extends AppCompatActivity implements OnMapReadyCallback
     @Override
     public void onMapReady(@NonNull GoogleMap googleMap) {
         this.mMap = googleMap;
-        this.mMap.getUiSettings().setScrollGesturesEnabled(false);
-        Intent intent = getIntent();
-        double lat = intent.getDoubleExtra("lat", 0);
-        double lng = intent.getDoubleExtra("lng", 0);
-        latLng = new LatLng(lat, lng);
-        marker = mMap.addMarker(new MarkerOptions().position(latLng).title("Title"));
-        mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(latLng, 15));
+        if (place == null) {
+            this.mMap.getUiSettings().setScrollGesturesEnabled(false);
+        }
         mMap.getUiSettings().setMapToolbarEnabled(false);
+        marker = mMap.addMarker(new MarkerOptions().position(latLng).title("Title"));
+        if (marker != null) {
+            marker.setDraggable(true);
+        }
+        mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(latLng, 15));
+        mMap.setOnMarkerDragListener(this);
     }
 
 
+    @Override
+    public void onMarkerDrag(@NonNull Marker marker) {
+
+    }
+
+    @Override
+    public void onMarkerDragEnd(@NonNull Marker marker) {
+        this.marker = marker;
+        this.latLng = marker.getPosition();
+    }
+
+    @Override
+    public void onMarkerDragStart(@NonNull Marker marker) {
+
+    }
 }
