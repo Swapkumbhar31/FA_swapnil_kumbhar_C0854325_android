@@ -12,7 +12,8 @@
     <string name="address">Address</string>
     <string name="enter_address">Enter address</string>
     <string name="enter_name">Enter name</string>
-    <string name="delete_note">Swipe to delete place</string>
+    <string name="delete_note">Swipe to update or delete place</string>
     <string name="mark_as_visited">Mark as visited</string>
     <string name="distance_100km">Distance : 0km</string>
+    <string name="get_directions">Get directions</string>
 </resources>

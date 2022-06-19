@@ -44,8 +44,8 @@ public class PlaceDetailsActivity extends AppCompatActivity implements OnMapRead
     GoogleMap mMap;
     Place place;
     LocationListener locationListener;
-    private static final int REQUEST_CODE = 200;
     private LocationManager manager;
+    private static final int REQUEST_CODE = 200;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -79,6 +79,7 @@ public class PlaceDetailsActivity extends AppCompatActivity implements OnMapRead
                 initView();
             });
             initView();
+            binding.directionButton.setEnabled(false);
         } else {
             Toast.makeText(this, "Invalid place id", Toast.LENGTH_LONG).show();
         }
@@ -102,6 +103,14 @@ public class PlaceDetailsActivity extends AppCompatActivity implements OnMapRead
                 float distance = results[0];
                 DecimalFormat df = new DecimalFormat("0.00");
                 binding.txtDistance.setText("Distance : " + df.format(distance / 1000) + " KM");
+
+                binding.directionButton.setEnabled(true);
+
+                binding.directionButton.setOnClickListener(view -> {
+                    Intent i = new Intent(android.content.Intent.ACTION_VIEW,
+                            Uri.parse("http://maps.google.com/maps?saddr=" + lat + "," + lng + "&daddr=" + place.getLat() + "," + place.getLng()));
+                    startActivity(i);
+                });
             } else {
                 Toast.makeText(this, "Unable to find location.", Toast.LENGTH_LONG).show();
             }

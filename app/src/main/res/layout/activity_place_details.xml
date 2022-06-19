@@ -57,6 +57,13 @@
                     android:id="@+id/map"
                     android:name="com.google.android.gms.maps.SupportMapFragment"/>
             </androidx.cardview.widget.CardView>
+            <Button
+                android:layout_margin="@dimen/padding_medium"
+                android:layout_width="match_parent"
+                android:id="@+id/direction_button"
+                style="@style/Widget.MaterialComponents.Button.TextButton"
+                android:text="@string/get_directions"
+                android:layout_height="wrap_content"/>
             <View
                 android:layout_width="match_parent"
                 android:layout_height="60dp"/>
