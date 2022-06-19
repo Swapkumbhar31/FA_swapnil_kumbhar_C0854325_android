@@ -13,6 +13,9 @@ public interface PlaceDAO {
     @Query("select * from places order by createdAt desc")
     List<Place> getAllPlaces();
 
+    @Query("select * from places where id = :id")
+    Place getPlaceByID(long id);
+
     @Insert
     void addPlace(Place place);
 

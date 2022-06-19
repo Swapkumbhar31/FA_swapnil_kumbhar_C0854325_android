@@ -4,7 +4,9 @@ import static ca.lambton.fa_swapnil_kumbhar_c0854325_android.Helper.ImageHelper.
 
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Bitmap;
+import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.view.LayoutInflater;
@@ -17,6 +19,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import java.io.IOException;
 import java.util.List;
 
+import ca.lambton.fa_swapnil_kumbhar_c0854325_android.PlaceDetailsActivity;
 import ca.lambton.fa_swapnil_kumbhar_c0854325_android.R;
 import ca.lambton.fa_swapnil_kumbhar_c0854325_android.database.Place;
 
@@ -36,7 +39,7 @@ public class PlaceListAdaptor extends RecyclerView.Adapter<PlaceListItemViewHold
         return new PlaceListItemViewHolder(view);
     }
 
-    @SuppressLint("SetTextI18n")
+    @SuppressLint({"SetTextI18n"})
     @Override
     public void onBindViewHolder(@NonNull PlaceListItemViewHolder holder, int position) {
         Place place = places.get(position);
@@ -54,7 +57,14 @@ public class PlaceListAdaptor extends RecyclerView.Adapter<PlaceListItemViewHold
             @SuppressLint("UseCompatLoadingForDrawables") Drawable res = context.getResources().getDrawable(R.drawable.no_image);
             holder.placeImage.setImageDrawable(res);
         }
-
+        holder.parentView.setOnClickListener(view -> {
+            Intent intent = new Intent(context, PlaceDetailsActivity.class);
+            intent.putExtra("placeId", place.getId());
+            context.startActivity(intent);
+        });
+        if (place.isVisited()) {
+            holder.parentView.setBackgroundColor(context.getResources().getColor(R.color.lighten_gray));
+        }
     }
 
     @Override

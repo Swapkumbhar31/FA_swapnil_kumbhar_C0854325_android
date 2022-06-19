@@ -57,7 +57,7 @@ public class PlaceList extends AppCompatActivity {
             userSettings.setIsFirstTimeOpen(false);
         }
 
-        PlaceListItemSwipeHelper placeListItemSwipeHelper = new PlaceListItemSwipeHelper(this, placesListView, 400) {
+        new PlaceListItemSwipeHelper(this, placesListView, 400) {
             @Override
             public void instantiateMyButton(RecyclerView.ViewHolder viewHolder, List<PlaceListItemSwipeHelper.MyButton> buffer) {
                 buffer.add(new MyButton(PlaceList.this, "Delete", 60, 0, Color.parseColor("#ff3c30"), new MyButtonClickListener() {

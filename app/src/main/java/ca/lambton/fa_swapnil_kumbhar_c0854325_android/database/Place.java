@@ -22,7 +22,6 @@ public class Place {
     @NonNull
     private String address;
 
-
     @Nullable
     private String imagePath;
 

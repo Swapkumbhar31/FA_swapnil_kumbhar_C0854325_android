@@ -4,6 +4,7 @@ import android.annotation.SuppressLint;
 import android.graphics.drawable.Drawable;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -15,11 +16,13 @@ public class PlaceListItemViewHolder extends RecyclerView.ViewHolder {
     TextView txtTitle;
     TextView txtSubtitle;
     ImageView placeImage;
+    LinearLayout parentView;
 
     public PlaceListItemViewHolder(@NonNull View itemView) {
         super(itemView);
         txtTitle = itemView.findViewById(R.id.title);
         txtSubtitle = itemView.findViewById(R.id.subtitle);
         placeImage = itemView.findViewById(R.id.placeImage);
+        parentView = itemView.findViewById(R.id.parentView);
     }
 }
