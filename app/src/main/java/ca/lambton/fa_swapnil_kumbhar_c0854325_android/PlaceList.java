@@ -1,6 +1,8 @@
 package ca.lambton.fa_swapnil_kumbhar_c0854325_android;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -10,8 +12,15 @@ import android.graphics.Color;
 import android.graphics.drawable.BitmapDrawable;
 import android.os.Bundle;
 import android.provider.MediaStore;
+import android.view.View;
 import android.widget.Toast;
 
+import com.google.android.gms.maps.GoogleMap;
+import com.google.android.gms.maps.OnMapReadyCallback;
+import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.Marker;
+import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.util.Date;
@@ -23,29 +32,30 @@ import ca.lambton.fa_swapnil_kumbhar_c0854325_android.SharedPreferences.UserSett
 import ca.lambton.fa_swapnil_kumbhar_c0854325_android.adaptor.PlaceListAdaptor;
 import ca.lambton.fa_swapnil_kumbhar_c0854325_android.database.Place;
 import ca.lambton.fa_swapnil_kumbhar_c0854325_android.database.PlacesRoomDB;
+import ca.lambton.fa_swapnil_kumbhar_c0854325_android.databinding.ActivityPlaceListBinding;
 
-public class PlaceList extends AppCompatActivity {
+public class PlaceList extends AppCompatActivity implements OnMapReadyCallback, GoogleMap.OnMarkerClickListener {
     private PlacesRoomDB placesRoomDB;
-
-    private FloatingActionButton floatingActionButton;
+    GoogleMap mMap;
 
     private List<Place> places;
-    RecyclerView placesListView;
     LinearLayoutManager layoutManager;
+    private ActivityPlaceListBinding binding;
+    boolean isMapView = false;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_place_list);
+        binding = ActivityPlaceListBinding.inflate(getLayoutInflater());
+        setContentView(binding.getRoot());
         setTitle("Home");
 
-        placesListView = findViewById(R.id.place_list);
-        placesListView.setHasFixedSize(true);
+        binding.placeList.setHasFixedSize(true);
         layoutManager = new LinearLayoutManager(this);
-        placesListView.setLayoutManager(layoutManager);
+        binding.placeList.setLayoutManager(layoutManager);
 
         placesRoomDB = PlacesRoomDB.getInstance(this);
 
-        floatingActionButton = findViewById(R.id.floatingActionButton);
+        FloatingActionButton floatingActionButton = findViewById(R.id.floatingActionButton);
 
         floatingActionButton.setOnClickListener(view -> {
             Intent i = new Intent(PlaceList.this, MapsActivity.class);
@@ -59,8 +69,28 @@ public class PlaceList extends AppCompatActivity {
             insertPlaces();
             userSettings.setIsFirstTimeOpen(false);
         }
-
-        new PlaceListItemSwipeHelper(this, placesListView, 300) {
+        binding.viewToggle.setOnClickListener(view -> {
+            if (isMapView) {
+                binding.viewToggle.setImageDrawable(ContextCompat.getDrawable(this, R.drawable.ic_baseline_view_list_48_black));
+                binding.map.setVisibility(View.GONE);
+                binding.placeList.setVisibility(View.VISIBLE);
+            } else {
+                binding.viewToggle.setImageDrawable(ContextCompat.getDrawable(this, R.drawable.ic_baseline_map_48_black));
+                binding.placeList.setVisibility(View.GONE);
+                binding.map.setVisibility(View.VISIBLE);
+            }
+            isMapView = !isMapView;
+        });
+        if (isMapView) {
+            binding.viewToggle.setImageDrawable(ContextCompat.getDrawable(this, R.drawable.ic_baseline_map_48_black));
+            binding.placeList.setVisibility(View.GONE);
+            binding.map.setVisibility(View.VISIBLE);
+        } else {
+            binding.map.setVisibility(View.GONE);
+            binding.placeList.setVisibility(View.VISIBLE);
+            binding.viewToggle.setImageDrawable(ContextCompat.getDrawable(this, R.drawable.ic_baseline_view_list_48_black));
+        }
+        new PlaceListItemSwipeHelper(this, binding.placeList, 300) {
             @Override
             public void instantiateMyButton(RecyclerView.ViewHolder viewHolder, List<PlaceListItemSwipeHelper.MyButton> buffer) {
                 buffer.add(new MyButton(PlaceList.this, "", 30, R.drawable.ic_baseline_delete_48_white, Color.parseColor("#e54304"), new MyButtonClickListener() {
@@ -101,6 +131,32 @@ public class PlaceList extends AppCompatActivity {
     protected void onResume() {
         super.onResume();
         places = placesRoomDB.placeDAO().getAllPlaces();
-        placesListView.setAdapter(new PlaceListAdaptor(this, places));
+        binding.placeList.setAdapter(new PlaceListAdaptor(this, places));
+        SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
+                .findFragmentById(R.id.map);
+        if (mapFragment != null) {
+            mapFragment.getMapAsync(this);
+        }
+    }
+
+    @Override
+    public void onMapReady(@NonNull GoogleMap googleMap) {
+        mMap = googleMap;
+        for (Place place: places) {
+            Marker marker = mMap.addMarker(new MarkerOptions().position(new LatLng(place.getLat(), place.getLng())).title(place.getName()));
+            if (marker != null) {
+                marker.setTag(place.getId());
+            }
+        }
+        mMap.setOnMarkerClickListener(this);
+    }
+
+    @Override
+    public boolean onMarkerClick(@NonNull Marker marker) {
+        int placeId = (int) marker.getTag();
+        Intent intent = new Intent(getApplicationContext(), PlaceDetailsActivity.class);
+        intent.putExtra("placeId", placeId);
+        startActivity(intent);
+        return false;
     }
 }
