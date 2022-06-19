@@ -94,7 +94,6 @@ public class PlaceDetailsActivity extends AppCompatActivity implements OnMapRead
             ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, REQUEST_CODE);
         } else {
             Location locationGPS = manager.getLastKnownLocation(LocationManager.FUSED_PROVIDER);
-            System.out.println("Distance : requested");
             if (locationGPS != null) {
                 double lat = locationGPS.getLatitude();
                 double lng = locationGPS.getLongitude();

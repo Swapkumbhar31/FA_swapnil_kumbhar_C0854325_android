@@ -53,6 +53,7 @@
                         <Button
                             android:id="@+id/closeBtn"
                             android:text="@string/close"
+                            style="@style/Widget.MaterialComponents.Button.TextButton"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"/>
                         <View
@@ -62,6 +63,7 @@
                         <Button
                             android:id="@+id/saveBtn"
                             android:text="@string/save"
+                            style="@style/ShapeAppearanceOverlay.Material3.Button"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"/>
                     </LinearLayout>
@@ -80,10 +82,27 @@
         android:clickable="true"
         android:focusable="true"
         android:layout_height="wrap_content" />
+    <androidx.cardview.widget.CardView
+        android:layout_width="50dp"
+        map:cardCornerRadius="@dimen/padding_large"
+        android:layout_below="@id/search_bar_text"
+        android:layout_margin="@dimen/padding_large"
+        android:layout_alignParentEnd="true"
+        android:layout_height="50dp">
+        <ImageView
+            android:layout_width="match_parent"
+            android:background="@color/white"
+            android:padding="10dp"
+            android:id="@+id/map_style_btn"
+            android:src="@drawable/default_map_style"
+            android:layout_height="match_parent"/>
+    </androidx.cardview.widget.CardView>
+
     <ListView
         android:background="@color/white"
         android:id="@+id/suggestionsList"
         android:layout_width="match_parent"
+        android:visibility="gone"
         android:layout_marginHorizontal="16dp"
         android:layout_below="@id/search_bar_text"
         android:layout_height="wrap_content"/>

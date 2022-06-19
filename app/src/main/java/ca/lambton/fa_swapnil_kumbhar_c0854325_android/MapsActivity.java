@@ -24,14 +24,13 @@ import android.util.Log;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
-import android.widget.ListAdapter;
 import android.widget.SearchView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
 import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 import androidx.fragment.app.FragmentActivity;
 
 import com.android.volley.Request;
@@ -65,7 +64,6 @@ import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
-import java.util.Objects;
 
 import ca.lambton.fa_swapnil_kumbhar_c0854325_android.adaptor.AddressSuggestionAdaptor;
 import ca.lambton.fa_swapnil_kumbhar_c0854325_android.databinding.ActivityMapsBinding;
@@ -75,12 +73,13 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     private static final int REQUEST_CODE = 200;
     private final String apiKey = "AIzaSyBSo8zZUD5p2lrXVV_ejXXG7VtcExLkBWM";
     LocationListener locationListener;
+    int mapStyle = 1;
+    List<Address> addresses = new ArrayList<>();
     private GoogleMap mMap;
     private ActivityMapsBinding binding;
     private LocationManager manager;
     private Marker newMarker;
     private PlacesClient placesClient;
-    List<Address> addresses =new ArrayList<>();
 
     public void getLocationFromAddress(LatLng latLng) {
         RequestQueue queue = Volley.newRequestQueue(this);
@@ -109,7 +108,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         queue.add(request);
     }
 
-    private void fetchPhoto(String placeId ) {
+    private void fetchPhoto(String placeId) {
 
         final List<Place.Field> fields = Collections.singletonList(Place.Field.PHOTO_METADATAS);
         final FetchPlaceRequest placeRequest = FetchPlaceRequest.newInstance(placeId, fields);
@@ -187,6 +186,21 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             startActivity(intent);
             finish();
         });
+        binding.mapStyleBtn.setOnClickListener(view -> {
+            mapStyle = ((mapStyle + 1) % 3) + 1;
+            switch (mapStyle) {
+                case 1:
+                    binding.mapStyleBtn.setImageDrawable(ContextCompat.getDrawable(this, R.drawable.default_map_style));
+                    break;
+                case 2:
+                    binding.mapStyleBtn.setImageDrawable(ContextCompat.getDrawable(this, R.drawable.satelite_map_style));
+                    break;
+                case 3:
+                    binding.mapStyleBtn.setImageDrawable(ContextCompat.getDrawable(this, R.drawable.terrain_map_style));
+                    break;
+            }
+            mMap.setMapType(mapStyle);
+        });
         setContentView(binding.getRoot());
         Places.initialize(getApplicationContext(), apiKey);
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
@@ -233,6 +247,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     public void onMapReady(@NonNull GoogleMap googleMap) {
         mMap = googleMap;
         mMap.getUiSettings().setMapToolbarEnabled(false);
+        mMap.setMapType(mapStyle);
         if (!manager.isProviderEnabled(LocationManager.FUSED_PROVIDER)) {
             OnGPS();
         } else {
@@ -340,7 +355,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         binding.suggestionsList.setAdapter(new AddressSuggestionAdaptor(this, addresses));
         View view1 = this.getCurrentFocus();
         if (view1 != null) {
-            InputMethodManager imm = (InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
+            InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
             imm.hideSoftInputFromWindow(view1.getWindowToken(), 0);
         }
         LatLng latLng = new LatLng(address.getLatitude(), address.getLongitude());
@@ -362,11 +377,9 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         List<Address> addresses = null;
         try {
             addresses = geocoder.getFromLocationName(s, 15);
-            if(addresses.isEmpty())
-            {
+            if (addresses.isEmpty()) {
                 this.addresses.clear();
-            }
-            else {
+            } else {
                 this.addresses = addresses;
             }
             System.out.println(this.addresses.size());
