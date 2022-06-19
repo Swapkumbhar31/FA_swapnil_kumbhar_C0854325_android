@@ -38,6 +38,14 @@
                     android:textColor="@color/light_gray"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"/>
+                <TextView
+                    style="@style/TextAppearance.AppCompat.Body2"
+                    android:text="@string/distance_100km"
+                    android:id="@+id/txt_distance"
+                    android:layout_marginTop="@dimen/padding_small"
+                    android:textColor="@color/light_gray"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"/>
             </LinearLayout>
             <androidx.cardview.widget.CardView
                 android:layout_width="match_parent"

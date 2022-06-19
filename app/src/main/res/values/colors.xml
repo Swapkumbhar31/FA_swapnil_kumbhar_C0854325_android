@@ -12,4 +12,5 @@
     <color name="white">#FFFFFFFF</color>
     <color name="light_gray">#7A7A7A</color>
     <color name="lighten_gray">#ECECEC</color>
+    <color name="lighten_green">#defabb</color>
 </resources>

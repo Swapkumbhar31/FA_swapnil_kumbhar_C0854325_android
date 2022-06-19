@@ -63,7 +63,7 @@ public class PlaceListAdaptor extends RecyclerView.Adapter<PlaceListItemViewHold
             context.startActivity(intent);
         });
         if (place.isVisited()) {
-            holder.parentView.setBackgroundColor(context.getResources().getColor(R.color.lighten_gray));
+            holder.parentView.setBackgroundColor(context.getResources().getColor(R.color.lighten_green));
         }
     }
 
