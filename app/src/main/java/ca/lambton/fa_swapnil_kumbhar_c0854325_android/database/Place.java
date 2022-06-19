@@ -56,13 +56,14 @@ public class Place {
     @TypeConverters(DateConverter.class)
     private Date createdAt;
 
-    public Place(@NonNull String name, @NonNull String address, @NonNull Double lat, @NonNull Double lng, @NonNull Date createdAt, @Nullable String imagePath) {
+    public Place(@NonNull String name, @NonNull String address, @NonNull Double lat, @NonNull Double lng, @NonNull Date createdAt, @Nullable String imagePath, @Nullable boolean isVisited) {
         this.name = name;
         this.address = address;
         this.lat = lat;
         this.lng = lng;
         this.imagePath = imagePath;
         this.createdAt = createdAt;
+        this.isVisited = isVisited;
     }
 
     @NonNull

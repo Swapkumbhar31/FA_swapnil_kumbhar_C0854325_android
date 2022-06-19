@@ -94,7 +94,8 @@ public class AddNewPlace extends AppCompatActivity implements OnMapReadyCallback
                         latLng.latitude,
                         latLng.longitude,
                         new Date(),
-                        imagePath
+                        imagePath,
+                        false
                 ));
             } else {
                 place.setName(binding.txtTitle.getText().toString());

@@ -134,16 +134,16 @@ public class PlaceList extends AppCompatActivity implements OnMapReadyCallback, 
     }
 
     private void insertPlaces() {
-        placesRoomDB.placeDAO().addPlace(new Place("Taj Mahal", "Taj Mahal", 27.1752474, 77.8330407, new Date(), null));
-        placesRoomDB.placeDAO().addPlace(new Place("Great Wall of China", "Great Wall of China", 40.4319118, 116.5681862, new Date(), null));
-        placesRoomDB.placeDAO().addPlace(new Place("Chichén Itzá", "Chichén Itzá", 20.6828175, -88.5727964, new Date(), null));
-        placesRoomDB.placeDAO().addPlace(new Place("Petra", "Petra", 30.328459, 35.4421735, new Date(), null));
-        placesRoomDB.placeDAO().addPlace(new Place("Machu Picchu", "Machu Picchu", -13.2086968, -72.5619342, new Date(), null));
-        placesRoomDB.placeDAO().addPlace(new Place("Christ the Redeemer", "Christ the Redeemer", -22.951911, -43.2126759, new Date(), null));
-        placesRoomDB.placeDAO().addPlace(new Place("Colosseum", "Colosseum", 41.8902102, 12.4922309, new Date(), null));
-        placesRoomDB.placeDAO().addPlace(new Place("Sukhothai, Thailand", "Sukhothai, Thailand", 17.2519855, 99.1364003, new Date(), null));
-        placesRoomDB.placeDAO().addPlace(new Place("CN Tower", "CN Tower", 43.6425701, -79.3892455, new Date(), null));
-        placesRoomDB.placeDAO().addPlace(new Place("Walt Disney World® Resort", "Walt Disney World® Resort", 28.3771903, -81.5752247, new Date(), null));
+        placesRoomDB.placeDAO().addPlace(new Place("Taj Mahal", "Taj Mahal", 27.1752474, 77.8330407, new Date(), null, false));
+        placesRoomDB.placeDAO().addPlace(new Place("Great Wall of China", "Great Wall of China", 40.4319118, 116.5681862, new Date(), null, false));
+        placesRoomDB.placeDAO().addPlace(new Place("Chichén Itzá", "Chichén Itzá", 20.6828175, -88.5727964, new Date(), null, false));
+        placesRoomDB.placeDAO().addPlace(new Place("Petra", "Petra", 30.328459, 35.4421735, new Date(), null, true));
+        placesRoomDB.placeDAO().addPlace(new Place("Machu Picchu", "Machu Picchu", -13.2086968, -72.5619342, new Date(), null, false));
+        placesRoomDB.placeDAO().addPlace(new Place("Christ the Redeemer", "Christ the Redeemer", -22.951911, -43.2126759, new Date(), null, true));
+        placesRoomDB.placeDAO().addPlace(new Place("Colosseum", "Colosseum", 41.8902102, 12.4922309, new Date(), null, false));
+        placesRoomDB.placeDAO().addPlace(new Place("Sukhothai, Thailand", "Sukhothai, Thailand", 17.2519855, 99.1364003, new Date(), null, false));
+        placesRoomDB.placeDAO().addPlace(new Place("CN Tower", "CN Tower", 43.6425701, -79.3892455, new Date(), null, true));
+        placesRoomDB.placeDAO().addPlace(new Place("Walt Disney World® Resort", "Walt Disney World® Resort", 28.3771903, -81.5752247, new Date(), null, false));
     }
 
     @SuppressLint("SetTextI18n")
